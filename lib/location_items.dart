@@ -16,11 +16,13 @@ typedef ToDoListRemovedCallback = Function(Item item);
 class LocationItem extends StatelessWidget {
   LocationItem(
       {required this.item,
+      required this.current,
       required this.onListChanged,
       required this.onDeleteItem})
       : super(key: ObjectKey(item));
 
   final Item item;
+  final bool current;
   final ToDoListChangedCallback onListChanged;
   final ToDoListRemovedCallback onDeleteItem;
 
@@ -30,17 +32,17 @@ class LocationItem extends StatelessWidget {
     // The BuildContext indicates where the build is
     // taking place and therefore which theme to use.
 
-    return completed //
+    return current //
         ? Colors.black54
         : Theme.of(context).primaryColor;
   }
 
   TextStyle? _getTextStyle(BuildContext context) {
-    if (!completed) return null;
+    if (!current) return null;
 
     return const TextStyle(
       color: Colors.black54,
-      decoration: TextDecoration.lineThrough,
+      backgroundColor: Colors.lightGreen,
     );
   }
 
@@ -48,9 +50,9 @@ class LocationItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: () {
-        onListChanged(item, completed);
+        onListChanged(item, current);
       },
-      onLongPress: completed
+      onLongPress: current
           ? () {
               onDeleteItem(item);
             }
