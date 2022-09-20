@@ -4,27 +4,20 @@ class Item {
   const Item({required this.name});
 
   final String name;
-
-  String abbrev() {
-    return name.substring(0, 1);
-  }
 }
 
-typedef ToDoListChangedCallback = Function(Item item, bool completed);
-typedef ToDoListRemovedCallback = Function(Item item);
+typedef LocationChangedCallback = Function(Item item, bool current);
 
 class LocationItem extends StatelessWidget {
-  LocationItem(
-      {required this.item,
-      required this.current,
-      required this.onListChanged,
-      required this.onDeleteItem})
-      : super(key: ObjectKey(item));
+  LocationItem({
+    required this.item,
+    required this.current,
+    required this.onListChanged,
+  }) : super(key: ObjectKey(item));
 
   final Item item;
   final bool current;
-  final ToDoListChangedCallback onListChanged;
-  final ToDoListRemovedCallback onDeleteItem;
+  final LocationChangedCallback onListChanged;
 
   Color _getColor(BuildContext context) {
     // The theme depends on the BuildContext because different
@@ -33,7 +26,7 @@ class LocationItem extends StatelessWidget {
     // taking place and therefore which theme to use.
 
     return current //
-        ? Colors.black54
+        ? Colors.green
         : Theme.of(context).primaryColor;
   }
 
@@ -42,7 +35,6 @@ class LocationItem extends StatelessWidget {
 
     return const TextStyle(
       color: Colors.black54,
-      backgroundColor: Colors.lightGreen,
     );
   }
 
@@ -52,14 +44,8 @@ class LocationItem extends StatelessWidget {
       onTap: () {
         onListChanged(item, current);
       },
-      onLongPress: current
-          ? () {
-              onDeleteItem(item);
-            }
-          : null,
       leading: CircleAvatar(
         backgroundColor: _getColor(context),
-        child: Text(item.abbrev()),
       ),
       title: Text(
         item.name,
