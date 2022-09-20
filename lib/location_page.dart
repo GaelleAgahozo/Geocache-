@@ -28,6 +28,7 @@ class _LocationListState extends State<LocationList> {
 
       if (!current) {
         print("Completing");
+        _itemSet.clear();
         _itemSet.add(item);
       } else {
         print("Making Undone");
