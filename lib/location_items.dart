@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
 class Item {
-  const Item({required this.name});
+  const Item(
+      {required this.name, required this.latitude, required this.longitude});
 
   final String name;
+  final double latitude;
+  final double longitude;
 }
 
 typedef LocationChangedCallback = Function(Item item, bool current);
@@ -51,6 +54,11 @@ class LocationItem extends StatelessWidget {
         item.name,
         style: _getTextStyle(context),
       ),
+      subtitle: Text("(" +
+          item.latitude.toString() +
+          ", " +
+          item.longitude.toString() +
+          ")"),
     );
   }
 }
