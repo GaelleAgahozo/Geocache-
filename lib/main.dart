@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sensors_plus/sensors_plus.dart';
 
 void main() {
   runApp(const MyApp());
@@ -48,18 +49,21 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  List<double>? _magnetometerValues;
+  //final _streamSubscriptions = <StreamSubscription<dynamic>>[];
   int _counter = 0;
 
   void _incrementCounter() {
-    setState(() {
+
+   
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
       // so that the display can reflect the updated values. If we changed
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+      
+    }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -73,12 +77,57 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: const Text('Sensor Example'),
       ),
-      body: Center(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Center(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                border: Border.all(width: 1.0, color: Colors.black38),
+              ),
+          ),
+      //Padding(
+        //padding: const EdgeInsets.all(16.0),
+        //child: Row(
+             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //children: <Widget>[
+                //Text('Magnetometer: $magnetometer'),
+              //],
+            //),
+         //),
+      //);
+      //);
+  
+          ),
+      ]),
+    );
+  }
+
+  //@override
+    //void dispose() {
+      //super.dispose();
+      //for (final subscription in _streamSubscriptions) {
+        //subscription.cancel();
+      //}
+    //}
+
+  /*@override
+    void initState() {
+      super.initState();
+        _streamSubscriptions.add(
+          magnetometerEvents.listen(
+            (MagnetometerEvent event) {
+              setState(() {
+                //_magnetometerValues = <double>[event.x, event.y, event.z];
+              });
+          },
+        ),
+      );
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: Column(
+        //child: Column(
           // Column is also a layout widget. It takes a list of children and
           // arranges them vertically. By default, it sizes itself to fit its
           // children horizontally, and tries to be as tall as its parent.
@@ -93,23 +142,19 @@ class _MyHomePageState extends State<MyHomePage> {
           // center the children vertically; the main axis here is the vertical
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
+            //const Text(
+             // 'You have pushed the button this many times:',
+           // ),
+            //Text(
+             // '$_counter',
+             // style: Theme.of(context).textTheme.headline4,
+            //),
+          //],
+      //floatingActionButton: FloatingActionButton(
+        //onPressed: _incrementCounter,
+        //tooltip: 'Increment',
+        //child: const Icon(Icons.add),
+      //), // This trailing comma makes auto-formatting nicer for build methods.
+    //);
+  }*/
 }

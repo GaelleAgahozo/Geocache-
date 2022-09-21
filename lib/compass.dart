@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
@@ -30,6 +32,7 @@ class _CompassScreenState extends State<CompassScreen> {
 
   double _angle = 0.0;
   Position? _pos;
+  late Timer _timer;
 
   void _updateAngle() {
     // Outputs of Geolocator.bearingBetween(...):
@@ -49,10 +52,23 @@ class _CompassScreenState extends State<CompassScreen> {
 
   void _updatePos() async {
     Position temp = await _determinePosition();
+    print("posupdate");
     setState(() {
       _pos = temp;
+      //_timer.isActive;
+      //print("timer is active");
     });
     _updateAngle();
+    /*_timer = Timer.periodic(const Duration(milliseconds: 200), (_) {
+      setState(() {
+        _step();
+      });
+    });*/
+    _timer = Timer.periodic(const Duration(seconds: 30), (_) { 
+      setState(() {
+        _getDistanceToTarget();
+      });
+    });
   }
 
   int _getDistanceToTarget() {
@@ -172,5 +188,6 @@ Future<Position> _determinePosition() async {
 
   // When we reach here, permissions are granted and we can
   // continue accessing the position of the device.
+
   return await Geolocator.getCurrentPosition();
 }
