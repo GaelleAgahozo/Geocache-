@@ -1,6 +1,6 @@
 {
-    "name": "geocaching_app",
-    "short_name": "geocaching_app",
+    "name": "geo_caching",
+    "short_name": "geo_caching",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
