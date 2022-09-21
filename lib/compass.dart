@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:sensors_plus/sensors_plus.dart';
 import 'dart:math' as math;
 
 class TestPlaces {
@@ -20,7 +21,7 @@ void main() {
 class CompassScreen extends StatefulWidget {
   CompassScreen({super.key});
 
-  Position target = TestPlaces.PURPLE_COW;
+  Position target = TestPlaces.BAILEY_LIBRARY;
   
   @override
   State<CompassScreen> createState() => _CompassScreenState();
@@ -28,7 +29,24 @@ class CompassScreen extends StatefulWidget {
 
 class _CompassScreenState extends State<CompassScreen> {
 
-  double _angle = 0.0;
+  _CompassScreenState() {
+    magnetometerEvents.listen((event) {
+      // transform the magnetometer vector into a compass heading
+      
+      // fix negative zero issues (breaks some calculations)
+      double x = event.x == -0 ? 0 : event.x;
+      double y = event.y == -0 ? 0 : event.y;
+      // find the angle between the x-axis and (x,y)
+      double val = math.atan(y/x);
+      val += x < 0 ? math.pi : 0;
+      val *= 180/math.pi; // radians to degrees
+      val -= 90; // match output to output of Geolocator.bearingBetween(...)
+      _angleOffset = val;
+    },);
+  }
+
+  double _angleOffset = 0.0; // compass heading of device
+  double _angle = 0.0; // angle to display on screen
   Position? _pos;
 
   void _updateAngle() {
@@ -43,7 +61,7 @@ class _CompassScreenState extends State<CompassScreen> {
     );
 
     setState(() {
-      _angle = bearing;
+      _angle = bearing - _angleOffset;
     });
   }
 
