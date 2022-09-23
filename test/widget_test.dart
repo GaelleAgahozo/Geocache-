@@ -6,6 +6,7 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -46,19 +47,23 @@ void main() {
     expect(find.byKey(const Key('compass')), findsNothing);
   });
 
-  testWidgets('Compass correctly orients based on device rotation, location, and target',
-  (WidgetTester tester) async {
-    // build a compass screen
-    await tester.pumpWidget(const MaterialApp(
-      home: CompassScreen(item: Item(name: 'North Pole', latitude: 90.0, longitude: 0.0)),
-    ));
-
-    // prompt user to reset AVD sensor states
-    print('Please ensure the device\'s orientation is north-facing...');
+  test('Compass magnetometer conversion method works as intended', () {
+    // create a State object for testing
+    CompassScreenState css = CompassScreenState();
     
-    CompassScreenState css = tester.state(
-      tester.widget(find.byType(CompassScreen))
-    );
-    css.convertMagnetometerEventToHeading(MagnetometerEvent(0, 1, 0));
+    // test the conversion method
+    // north
+    double output = css.convertMagnetometerEventToHeading(MagnetometerEvent(0, 48.4, 0));
+    expect(output, 0);
+    // west
+    output = css.convertMagnetometerEventToHeading(MagnetometerEvent(48.4, 0, 0));
+    expect(output, -90);
+    // south
+    output = css.convertMagnetometerEventToHeading(MagnetometerEvent(0, -48.4, 0));
+    expect(output < 0 ? -output : output, 180);
+    // east
+    output = css.convertMagnetometerEventToHeading(MagnetometerEvent(-48.4, 0, 0));
+    expect(output, 90);
+
   });
 }
