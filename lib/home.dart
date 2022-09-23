@@ -43,6 +43,8 @@ class _MyHomePageState extends State<MyHomePage> {
       _longitude = pos.longitude.toString();
       _altitude = pos.altitude.toString();
       _speed = pos.speed.toString();
+
+      _address = pm[0].toString();
     });
   }
 
@@ -95,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             const Text(
               'Your last known location is:',
