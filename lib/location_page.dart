@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geocaching_app/location_items.dart';
+import 'package:geocaching_app/compass.dart';
 
 class LocationList extends StatefulWidget {
   const LocationList({super.key});
@@ -30,6 +32,7 @@ class _LocationListState extends State<LocationList> {
         print("Completing");
         _itemSet.clear();
         _itemSet.add(item);
+        //MethodCall(updateTarget(item);
       } else {
         print("Making Undone");
         _itemSet.remove(item);

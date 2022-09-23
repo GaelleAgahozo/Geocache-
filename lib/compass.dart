@@ -3,49 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:sensors_plus/sensors_plus.dart';
+import 'package:geocaching_app/location_items.dart';
 import 'dart:math' as math;
 
-class TestPlaces {
-  static const Position BAILEY_LIBRARY = Position(
-      latitude: 35.10136,
-      longitude: -92.44295,
-      timestamp: null,
-      accuracy: 0,
-      altitude: 0,
-      heading: 0,
-      speed: 0,
-      speedAccuracy: 0);
-  static const Position WEST_GAZEBO = Position(
-      latitude: 35.09928,
-      longitude: -92.44269,
-      timestamp: null,
-      accuracy: 0,
-      altitude: 0,
-      heading: 0,
-      speed: 0,
-      speedAccuracy: 0);
-  static const Position PURPLE_COW = Position(
-      latitude: 35.10252,
-      longitude: -92.43848,
-      timestamp: null,
-      accuracy: 0,
-      altitude: 0,
-      heading: 0,
-      speed: 0,
-      speedAccuracy: 0);
-  static const Position NORTH_POLE = Position(
-      latitude: 90,
-      longitude: 0,
-      timestamp: null,
-      accuracy: 0,
-      altitude: 0,
-      heading: 0,
-      speed: 0,
-      speedAccuracy: 0);
-}
-
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     title: 'Compass Screen Test',
     home: CompassScreen(),
   ));
@@ -53,8 +15,6 @@ void main() {
 
 class CompassScreen extends StatefulWidget {
   const CompassScreen({super.key});
-
-  final Position target = TestPlaces.BAILEY_LIBRARY;
 
   @override
   State<CompassScreen> createState() => _CompassScreenState();
@@ -80,6 +40,7 @@ class _CompassScreenState extends State<CompassScreen> {
     });
   }
 
+  Item target = Item(name: "North Pole", latitude: 90.0, longitude: 0.0);
   double _angleOffset = 0.0; // compass heading of device
   double _angle = 0.0; // angle to display on screen
   int _targetDist = 0; // distance to target, in meters
@@ -100,6 +61,12 @@ class _CompassScreenState extends State<CompassScreen> {
     return val;
   }
 
+  void _updateTarget(item) {
+    setState(() {
+      target = item;
+    });
+  }
+
   void _updateAngle() {
     // Outputs of Geolocator.bearingBetween(...):
     //   0 = north
@@ -107,7 +74,7 @@ class _CompassScreenState extends State<CompassScreen> {
     // 180 = south
     // -90 = west
     double bearing = Geolocator.bearingBetween(_pos?.latitude ?? 0,
-        _pos?.longitude ?? 0, widget.target.latitude, widget.target.longitude);
+        _pos?.longitude ?? 0, target.latitude, target.longitude);
 
     setState(() {
       _angle = bearing - _angleOffset;
@@ -116,7 +83,7 @@ class _CompassScreenState extends State<CompassScreen> {
 
   void _updateTargetDist() {
     double rawDist = Geolocator.distanceBetween(_pos?.latitude ?? 0,
-        _pos?.longitude ?? 0, widget.target.latitude, widget.target.longitude);
+        _pos?.longitude ?? 0, target.latitude, target.longitude);
     _targetDist = rawDist.toInt();
   }
 
