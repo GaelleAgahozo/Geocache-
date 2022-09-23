@@ -11,11 +11,11 @@ class CompassScreen extends StatefulWidget {
   final Item item;
 
   @override
-  State<CompassScreen> createState() => _CompassScreenState();
+  State<CompassScreen> createState() => CompassScreenState();
 }
 
-class _CompassScreenState extends State<CompassScreen> {
-  _CompassScreenState() {
+class CompassScreenState extends State<CompassScreen> {
+  CompassScreenState() {
     // Listeners are initialized inside the State's constructor
     // magnetometer listener (updates angle)
     magnetometerEvents.listen(
@@ -45,6 +45,11 @@ class _CompassScreenState extends State<CompassScreen> {
   double _angle = 0.0; // angle to display on screen
   int _targetDist = 0; // distance to target, in meters
   Position? _pos; // current device position
+
+  @visibleForTesting
+  double convertMagnetometerEventToHeading(MagnetometerEvent event) {
+    return _convertMagnetometerEventToHeading(event);
+  }
 
   double _convertMagnetometerEventToHeading(MagnetometerEvent event) {
     // transform the magnetometer vector into a compass heading
@@ -99,6 +104,7 @@ class _CompassScreenState extends State<CompassScreen> {
               ),
             ),
             Transform.rotate(
+              key: const Key('compass'),
               angle: _angle * (math.pi / 180),
               child: Icon(
                 Icons.arrow_upward_rounded,
