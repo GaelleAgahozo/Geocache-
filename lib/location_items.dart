@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geocaching_app/compass.dart';
 
 class Item {
   const Item(
@@ -46,6 +47,12 @@ class LocationItem extends StatelessWidget {
     return ListTile(
       onTap: () {
         onListChanged(item, current);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CompassScreen(item: item),
+          ),
+        );
       },
       leading: CircleAvatar(
         backgroundColor: _getColor(context),

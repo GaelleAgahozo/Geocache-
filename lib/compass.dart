@@ -1,20 +1,14 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:geocaching_app/location_items.dart';
 import 'dart:math' as math;
 
-void main() {
-  runApp(const MaterialApp(
-    title: 'Compass Screen Test',
-    home: CompassScreen(),
-  ));
-}
-
 class CompassScreen extends StatefulWidget {
-  const CompassScreen({super.key});
+  const CompassScreen({super.key, required this.item});
+
+  final Item item;
 
   @override
   State<CompassScreen> createState() => _CompassScreenState();
@@ -40,7 +34,13 @@ class _CompassScreenState extends State<CompassScreen> {
     });
   }
 
-  Item target = Item(name: "North Pole", latitude: 90.0, longitude: 0.0);
+  @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
   double _angleOffset = 0.0; // compass heading of device
   double _angle = 0.0; // angle to display on screen
   int _targetDist = 0; // distance to target, in meters
@@ -61,12 +61,6 @@ class _CompassScreenState extends State<CompassScreen> {
     return val;
   }
 
-  void _updateTarget(item) {
-    setState(() {
-      target = item;
-    });
-  }
-
   void _updateAngle() {
     // Outputs of Geolocator.bearingBetween(...):
     //   0 = north
@@ -74,7 +68,7 @@ class _CompassScreenState extends State<CompassScreen> {
     // 180 = south
     // -90 = west
     double bearing = Geolocator.bearingBetween(_pos?.latitude ?? 0,
-        _pos?.longitude ?? 0, target.latitude, target.longitude);
+        _pos?.longitude ?? 0, widget.item.latitude, widget.item.longitude);
 
     setState(() {
       _angle = bearing - _angleOffset;
@@ -83,50 +77,55 @@ class _CompassScreenState extends State<CompassScreen> {
 
   void _updateTargetDist() {
     double rawDist = Geolocator.distanceBetween(_pos?.latitude ?? 0,
-        _pos?.longitude ?? 0, target.latitude, target.longitude);
+        _pos?.longitude ?? 0, widget.item.latitude, widget.item.longitude);
     _targetDist = rawDist.toInt();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 20),
-            child: Text(
-              'Direction to Geocache:',
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Compass'),
+      ),
+      body:Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: Text(
+                'Direction to Geocache:',
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+            ),
+            Transform.rotate(
+              angle: _angle * (math.pi / 180),
+              child: Icon(
+                Icons.arrow_upward_rounded,
+                size: 200,
+                color: Theme.of(context).primaryColorDark,
+                shadows: [
+                  Shadow(
+                    color: Colors.black38,
+                    offset: Offset.fromDirection(1, 8),
+                    blurRadius: 2,
+                  )
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: Text(
+                'Distance to Target:',
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+            ),
+            Text(
+              '${_targetDist}m',
               style: Theme.of(context).textTheme.headlineSmall,
             ),
-          ),
-          Transform.rotate(
-            angle: _angle * (math.pi / 180),
-            child: Icon(
-              Icons.arrow_upward_rounded,
-              size: 200,
-              color: Theme.of(context).primaryColorDark,
-              shadows: [
-                Shadow(
-                  color: Colors.black38,
-                  offset: Offset.fromDirection(1, 8),
-                  blurRadius: 2,
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 20),
-            child: Text(
-              'Distance to Target:',
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-          ),
-          Text(
-            '${_targetDist}m',
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
