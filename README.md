@@ -1,6 +1,6 @@
 # Geocaching App
 
-## What does our app to?
+## What does our app do?
 
 Our app allows the user to locate geographic points of interest from a list of provided locations, andprovides direction to target locations using a compass.
 
