@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:geocaching_app/location_items.dart';
+import 'package:geocaching_app/main.dart';
 import 'dart:math' as math;
 
 class CompassScreen extends StatefulWidget {
@@ -118,6 +119,15 @@ class CompassScreenState extends State<CompassScreen> {
                   )
                 ],
               ),
+
+              /*child: ImageIcon(
+                AssetImage('assets/compass needle.jpeg'),
+                size: 150,
+                  /*height: 200,
+                  scale: 2.5,
+                  // color: Color.fromARGB(255, 15, 147, 59),
+                  opacity:
+                      const AlwaysStoppedAnimation<double>(0.5)*/),*/
             ),
             Padding(
               padding: const EdgeInsets.only(top: 20),

@@ -21,7 +21,7 @@ void main() {
   testWidgets('Run app, choose a location, and look at the compass', 
   (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(const LocationList());
 
     // ensure that there is at least one location to choose
     expect(find.byType(LocationItem), findsWidgets);
