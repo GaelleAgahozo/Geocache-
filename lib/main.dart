@@ -36,6 +36,11 @@ class LocationList extends StatefulWidget {
 }
 
 class _LocationListState extends State<LocationList> {
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _itemSort());
+  }
+
   final _itemSet = <Item>{};
   List<Item> items = [
     const Item(
@@ -343,6 +348,15 @@ class _LocationListState extends State<LocationList> {
   String valueText = "";
   String itstext = "";
 
+  void _itemSort() {
+    // a function that sorts the item
+    items.sort((a, b) {
+      return a.name.compareTo(b.name);
+    });
+
+    setState(() {});
+  }
+
   //final List<Item> itemss = [const Item(name: "add new direction", latitude: 0, longitude: 0 )];
   //final _itemSet = <Item>{};
 
@@ -381,6 +395,7 @@ class _LocationListState extends State<LocationList> {
           latitude: double.parse(a[0]),
           longitude: double.parse(a[1]));
       items.insert(0, item);
+      _itemSort();
       _inputController.clear();
       _directionsController.clear();
     });
