@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:geocaching_app/compass.dart';
+// import 'package:flutter/services.dart';
 import 'package:geocaching_app/location_items.dart';
-import 'package:flutter/src/services/text_formatter.dart';
+// import 'package:flutter/src/services/text_formatter.dart';
 import 'package:geocaching_app/NewButton.dart';
+// import 'package:geocaching_app/nav.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.brown,
         textTheme: GoogleFonts.novaSlimTextTheme(),
       ),
-      home: LocationList(),
+      home: const LocationList(),
     );
   }
 }
@@ -36,6 +36,7 @@ class LocationList extends StatefulWidget {
 }
 
 class _LocationListState extends State<LocationList> {
+  @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) => _itemSort());
@@ -409,6 +410,7 @@ class _LocationListState extends State<LocationList> {
           backgroundColor: Colors.brown,
         ),
         body: ListView(
+          scrollDirection: Axis.vertical,
           key: ObjectKey(items.first),
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           children: items.map((item) {

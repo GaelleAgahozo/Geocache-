@@ -93,7 +93,7 @@ class CompassScreenState extends State<CompassScreen> {
       appBar: AppBar(
         title: const Text('Compass'),
       ),
-      body:Center(
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

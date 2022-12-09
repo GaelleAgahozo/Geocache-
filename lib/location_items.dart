@@ -4,7 +4,7 @@ import 'package:geocaching_app/compass.dart';
 class Item {
   const Item(
       {required this.name, required this.latitude, required this.longitude});
-      //
+  //
 
   final String name;
   final double latitude;
@@ -50,10 +50,7 @@ class LocationItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: () {
-        onListChanged(
-          item, 
-          saved
-          );
+        onListChanged(item, saved);
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -68,12 +65,7 @@ class LocationItem extends StatelessWidget {
         item.name,
         style: _getTextStyle(context),
       ),
-      subtitle: Text("(" +
-         item.latitude.toString() +
-          //latitude.toString() +
-          ", " +
-          item.longitude.toString() +
-          ")"),
+      subtitle: Text("(${item.latitude}, ${item.longitude})"),
     );
   }
 }

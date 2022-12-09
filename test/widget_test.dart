@@ -11,15 +11,17 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geocaching_app/compass.dart';
+import 'package:geocaching_app/list_locations.dart';
 import 'package:geocaching_app/location_items.dart';
 
+import 'package:geocaching_app/nav.dart';
 import 'package:geocaching_app/main.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
 void main() {
   // full test of app
-  testWidgets('Run app, choose a location, and look at the compass', 
-  (WidgetTester tester) async {
+  testWidgets('Run app, choose a location, and look at the compass',
+      (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(const LocationList());
 
@@ -50,20 +52,23 @@ void main() {
   test('Compass magnetometer conversion method works as intended', () {
     // create a State object for testing
     CompassScreenState css = CompassScreenState();
-    
+
     // test the conversion method
     // north
-    double output = css.convertMagnetometerEventToHeading(MagnetometerEvent(0, 48.4, 0));
+    double output =
+        css.convertMagnetometerEventToHeading(MagnetometerEvent(0, 48.4, 0));
     expect(output, 0);
     // west
-    output = css.convertMagnetometerEventToHeading(MagnetometerEvent(48.4, 0, 0));
+    output =
+        css.convertMagnetometerEventToHeading(MagnetometerEvent(48.4, 0, 0));
     expect(output, -90);
     // south
-    output = css.convertMagnetometerEventToHeading(MagnetometerEvent(0, -48.4, 0));
+    output =
+        css.convertMagnetometerEventToHeading(MagnetometerEvent(0, -48.4, 0));
     expect(output < 0 ? -output : output, 180);
     // east
-    output = css.convertMagnetometerEventToHeading(MagnetometerEvent(-48.4, 0, 0));
+    output =
+        css.convertMagnetometerEventToHeading(MagnetometerEvent(-48.4, 0, 0));
     expect(output, 90);
-
   });
 }
